@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",  // Specify output directory
+    "rootDir": "./src",  // Specify root directory for source files
     "target": "ES2021",
     "lib": ["DOM", "ES2021"],
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["@webgpu/types"]  // Add this line
   }
+  // "include": ["wgsl.d.ts","webgpu.d.ts"]
 }
