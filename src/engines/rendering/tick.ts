@@ -1,3 +1,10 @@
+/**
+ * Main tick function to run the whole rendering process
+ * @param device -> GPU Device used
+ * @param context
+ * @param pipeline -> Used pipeline
+ */
+
 export function tick(
      device: GPUDevice,
      context: GPUCanvasContext,
@@ -10,7 +17,7 @@ export function tick(
           colorAttachments: [
                {
                     view: textureView,
-                    clearValue: { r: 0.0, g: 0.0, b: 0.3, a: 1.0 },
+                    clearValue: { r: 0.5, g: 0.0, b: 0.0, a: 1.0 },
                     loadOp: "clear",
                     storeOp: "store",
                },
