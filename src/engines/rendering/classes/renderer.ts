@@ -1,4 +1,4 @@
-import { pipeline } from "../pipeline";
+import { Pipeline } from "./pipeline";
 
 export class Renderer {
      private canvas: HTMLCanvasElement;
@@ -11,10 +11,9 @@ export class Renderer {
           !Temp solutions
      */
      private created: boolean;
-     private pipeline: GPURenderPipeline | undefined;
+     private pipeline: Pipeline | undefined;
 
      constructor(name: string, gpuDevice: GPUDevice, active: boolean) {
-          // this.pipeline = new GPURenderPipeline();
           this.created = false;
 
           this.canvas = document.createElement("canvas");
@@ -55,7 +54,7 @@ export class Renderer {
           });
      }
 
-     async render() {
+     public async render() {
           if (!this.created) {
                if (!this.gpuTextureFormat) {
                     console.error(
@@ -63,11 +62,13 @@ export class Renderer {
                     );
                     return;
                }
-               this.pipeline = await pipeline.create(
+               this.pipeline = new Pipeline(
                     this.gpuDevice,
                     this.gpuTextureFormat,
                     "shaders/default"
                );
+               await this.pipeline.init();
+
                this.created = true;
           }
           if (!this.pipeline) {
@@ -92,12 +93,16 @@ export class Renderer {
                ],
           };
 
-          const passEncoder =
-               commandEncoder.beginRenderPass(renderPassDescriptor);
-          passEncoder.setPipeline(this.pipeline); //temp solution
-          passEncoder.draw(3, 1, 0, 0);
-          passEncoder.end();
-
-          this.gpuDevice.queue.submit([commandEncoder.finish()]);
+          const pipeline = this.pipeline.get();
+          if (pipeline) {
+               const passEncoder =
+                    commandEncoder.beginRenderPass(renderPassDescriptor);
+               passEncoder.setPipeline(pipeline); //temp solution
+               passEncoder.draw(3, 1, 0, 0);
+               passEncoder.end();
+               this.gpuDevice.queue.submit([commandEncoder.finish()]);
+          } else {
+               console.log("No working pipeline detected");
+          }
      }
 }

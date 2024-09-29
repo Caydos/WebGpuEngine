@@ -1,7 +1,8 @@
-import { rendering } from "./engines/engines";
-import { RenderingManager } from "./engines/rendering/class/renderingManager";
+import { Engines } from "./engines/engines";
+import { RenderingManager } from "./engines/rendering/classes/renderingManager";
+
 async function main() {
-     const renderingDetails = await rendering.initialize();
+     const renderingDetails = await Engines.Rendering.initialize();
      if (!renderingDetails) {
           console.error("Failed to get rendering details");
           return;
@@ -9,7 +10,12 @@ async function main() {
      const renderingManager = new RenderingManager();
      renderingManager.addRenderer("main", renderingDetails.device, true);
 
-     renderingManager.renderAll();
+     async function loop() {
+          renderingManager.renderAll();
+
+          requestAnimationFrame(loop);
+     }
+     loop();
 }
 
 main();

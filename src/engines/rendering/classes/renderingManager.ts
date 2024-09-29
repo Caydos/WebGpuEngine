@@ -7,7 +7,7 @@ export class RenderingManager {
           this.renderers = new Map<string, Renderer>();
      }
 
-     addRenderer(
+     public addRenderer(
           name: string,
           gpuDevice: GPUDevice,
           active: boolean
@@ -17,7 +17,7 @@ export class RenderingManager {
           return renderer;
      }
 
-     removeRenderer(name: string): void {
+     public removeRenderer(name: string) {
           if (this.renderers.has(name)) {
                this.renderers.delete(name);
                console.log(`Renderer ${name} removed.`);
@@ -26,10 +26,8 @@ export class RenderingManager {
           }
      }
 
-     renderAll(): void {
+     public async renderAll() {
+          // If needed add an "updater"
           this.renderers.forEach((renderer) => renderer.render());
-
-          // Use requestAnimationFrame to keep the loop running
-          requestAnimationFrame(() => this.renderAll());
      }
 }

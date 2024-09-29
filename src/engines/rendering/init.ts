@@ -1,9 +1,6 @@
-// import { tick } from "./tick";
-// import { createPipeline } from "./pipeline";
-
 /**
- * !Entry point of the program (need be changed)
- * @returns
+ * Initialize webGPU
+ * @returns {GPUAdapter, GPUDevice}
  */
 
 export async function initWebGPU() {
@@ -20,26 +17,5 @@ export async function initWebGPU() {
 
      const device = await adapter.requestDevice();
      console.log("Nuhh huh it seems to work nicely", device);
-
-     // const context = canvas.getContext("webgpu") as GPUCanvasContext;
-
-     // const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
-     // context.configure({
-     //      device,
-     //      format: presentationFormat,
-     //      alphaMode: "opaque",
-     // });
-
-     // const pipeline = await createPipeline(
-     //      device,
-     //      presentationFormat,
-     //      "/shaders/default"
-     // );
-
-     // function frame() {
-     //      tick(device!, context, pipeline);
-     //      requestAnimationFrame(frame);
-     // }
-     // requestAnimationFrame(frame);
      return { adapter, device };
 }
