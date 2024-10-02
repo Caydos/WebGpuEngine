@@ -16,7 +16,7 @@
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Engines: () => (/* binding */ Engines)\n/* harmony export */ });\n/* harmony import */ var _rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rendering/classes/renderingManager */ \"./src/engines/rendering/classes/renderingManager.ts\");\n/* harmony import */ var _rendering_init__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendering/init */ \"./src/engines/rendering/init.ts\");\n/* harmony import */ var _rendering_classes_pipeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rendering/classes/pipeline */ \"./src/engines/rendering/classes/pipeline.ts\");\n\n\n\n/**\n * ! Later issues because this will need to be accessible in all scripts (checks needed for manager to make sure only one is created)\n */\nconst Engines = {\n    Rendering: {\n        manager: new _rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_0__.RenderingManager(),\n        initialize: _rendering_init__WEBPACK_IMPORTED_MODULE_1__.initWebGPU,\n        Pipeline: _rendering_classes_pipeline__WEBPACK_IMPORTED_MODULE_2__.Pipeline,\n    },\n    Scripting: {},\n};\n\n\n//# sourceURL=webpack://commander/./src/engines/engines.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Engines: () => (/* binding */ Engines)\n/* harmony export */ });\n/* harmony import */ var _rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rendering/classes/renderingManager */ \"./src/engines/rendering/classes/renderingManager.ts\");\n/* harmony import */ var _rendering_init__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendering/init */ \"./src/engines/rendering/init.ts\");\n/* harmony import */ var _rendering_classes_pipeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rendering/classes/pipeline */ \"./src/engines/rendering/classes/pipeline.ts\");\n/* harmony import */ var _scripting_classes_scriptManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripting/classes/scriptManager */ \"./src/engines/scripting/classes/scriptManager.ts\");\n/* harmony import */ var _scripting_classes_script__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripting/classes/script */ \"./src/engines/scripting/classes/script.ts\");\n\n\n\n\n\nconst Engines = {\n    Rendering: {\n        manager: new _rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_0__.RenderingManager(),\n        initialize: _rendering_init__WEBPACK_IMPORTED_MODULE_1__.initWebGPU,\n        Pipeline: _rendering_classes_pipeline__WEBPACK_IMPORTED_MODULE_2__.Pipeline,\n    },\n    Scripting: {\n        manager: new _scripting_classes_scriptManager__WEBPACK_IMPORTED_MODULE_3__.ScriptManager(),\n        script: _scripting_classes_script__WEBPACK_IMPORTED_MODULE_4__.Script,\n    },\n};\n\n\n//# sourceURL=webpack://commander/./src/engines/engines.ts?");
 
 /***/ }),
 
@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Pipeline: () => (/* binding */ Pipeline)\n/* harmony export */ });\n/* harmony import */ var _loader_loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loader/loader */ \"./src/engines/rendering/loader/loader.ts\");\n\n/**\n * ! Old comments\n * Used to create rendering pipeline with custom shaders and topology\n * @param device\n * @param canvasFormat -> color format depending on the GPU [\"bgra8unorm\",\"rgba8unorm\"]\n * @param shadersPath -> path to the folder where the vertex.wgsl and fragment.wgsl are located\n * @param drawTypology -> type GPUPrimitiveTopology = \"point-list\" | \"line-list\" | \"line-strip\" | \"triangle-list\" | \"triangle-strip\"\n * @returns\n */\nclass Pipeline {\n    constructor(device, canvasFormat, shadersPath, drawTypology = \"triangle-list\") {\n        this.device = device;\n        this.canvasFormat = canvasFormat;\n        this.shadersPath = shadersPath;\n        this.drawTypology = drawTypology;\n    }\n    // Async initialization method\n    async init() {\n        this.pipeline = this.device.createRenderPipeline({\n            layout: \"auto\",\n            vertex: {\n                module: this.device.createShaderModule({\n                    code: await _loader_loader__WEBPACK_IMPORTED_MODULE_0__.loader.shaders.fragment(this.shadersPath + \"/vertex.wgsl\"),\n                }),\n                entryPoint: \"main\",\n            },\n            fragment: {\n                module: this.device.createShaderModule({\n                    code: await _loader_loader__WEBPACK_IMPORTED_MODULE_0__.loader.shaders.fragment(this.shadersPath + \"/fragment.wgsl\"),\n                }),\n                entryPoint: \"main\",\n                targets: [\n                    {\n                        format: this.canvasFormat,\n                    },\n                ],\n            },\n            primitive: {\n                topology: this.drawTypology,\n            },\n        });\n    }\n    // Getter for the pipeline (optional, depending on how you want to use the pipeline)\n    get() {\n        return this.pipeline;\n    }\n}\n\n\n//# sourceURL=webpack://commander/./src/engines/rendering/classes/pipeline.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Pipeline: () => (/* binding */ Pipeline)\n/* harmony export */ });\n/* harmony import */ var _loader_loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loader/loader */ \"./src/engines/rendering/loader/loader.ts\");\n\n/**\n * ! Old comments\n * Used to create rendering pipeline with custom shaders and topology\n * @param device\n * @param canvasFormat -> color format depending on the GPU [\"bgra8unorm\",\"rgba8unorm\"]\n * @param shadersPath -> path to the folder where the vertex.wgsl and fragment.wgsl are located\n * @param drawTypology -> type GPUPrimitiveTopology = \"point-list\" | \"line-list\" | \"line-strip\" | \"triangle-list\" | \"triangle-strip\"\n * @returns\n */\nclass Pipeline {\n    constructor(device, canvasFormat, shadersPath, drawTypology = \"triangle-list\") {\n        this.device = device;\n        this.canvasFormat = canvasFormat;\n        this.shadersPath = shadersPath;\n        this.drawTypology = drawTypology;\n    }\n    async init() {\n        this.pipeline = this.device.createRenderPipeline({\n            layout: \"auto\",\n            vertex: {\n                module: this.device.createShaderModule({\n                    code: await _loader_loader__WEBPACK_IMPORTED_MODULE_0__.loader.shaders.fragment(this.shadersPath + \"/vertex.wgsl\"),\n                }),\n                entryPoint: \"main\",\n            },\n            fragment: {\n                module: this.device.createShaderModule({\n                    code: await _loader_loader__WEBPACK_IMPORTED_MODULE_0__.loader.shaders.fragment(this.shadersPath + \"/fragment.wgsl\"),\n                }),\n                entryPoint: \"main\",\n                targets: [\n                    {\n                        format: this.canvasFormat,\n                    },\n                ],\n            },\n            primitive: {\n                topology: this.drawTypology,\n            },\n        });\n    }\n    get() {\n        return this.pipeline;\n    }\n}\n\n\n//# sourceURL=webpack://commander/./src/engines/rendering/classes/pipeline.ts?");
 
 /***/ }),
 
@@ -80,13 +80,83 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/engines/scripting/classes/script.ts":
+/*!*************************************************!*\
+  !*** ./src/engines/scripting/classes/script.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Script: () => (/* binding */ Script)\n/* harmony export */ });\n/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../utils/utils */ \"./src/utils/utils.ts\");\n\nclass Script {\n    log(...args) {\n        _utils_utils__WEBPACK_IMPORTED_MODULE_0__.Utils.Logs.write(\"[Script:\", this.name, \"] - \", ...args);\n    }\n    constructor(path) {\n        /**\n         * Prevents ticks from overlapping\n         */\n        this.isTicking = false;\n        this.worker = new Worker(path);\n        this.name = _utils_utils__WEBPACK_IMPORTED_MODULE_0__.Utils.Files.findNameFromPath(path);\n        this.log(\"Script created\");\n    }\n    getName() {\n        return this.name;\n    }\n    setName(name) {\n        this.name = name;\n    }\n    async tick() {\n        if (this.isTicking) {\n            this.log(\"Tick is already running\");\n            return;\n        }\n        this.isTicking = true;\n        return new Promise((resolve, reject) => {\n            this.worker.postMessage({ type: \"tick\" });\n            this.worker.onmessage = (event) => {\n                if (event.data.type === \"tickComplete\") {\n                    this.log(\"Tick completed\");\n                    this.isTicking = false;\n                    resolve();\n                }\n            };\n            this.worker.onerror = (error) => {\n                this.log(\"Error in worker tick:\", error);\n                this.isTicking = false;\n                reject(error);\n            };\n        });\n    }\n}\n\n\n//# sourceURL=webpack://commander/./src/engines/scripting/classes/script.ts?");
+
+/***/ }),
+
+/***/ "./src/engines/scripting/classes/scriptManager.ts":
+/*!********************************************************!*\
+  !*** ./src/engines/scripting/classes/scriptManager.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   ScriptManager: () => (/* binding */ ScriptManager)\n/* harmony export */ });\n/* harmony import */ var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./script */ \"./src/engines/scripting/classes/script.ts\");\n\nclass ScriptManager {\n    constructor() {\n        this.scripts = [];\n    }\n    addScript(path) {\n        const newScript = new _script__WEBPACK_IMPORTED_MODULE_0__.Script(path);\n        this.scripts.push(newScript);\n    }\n    removeScript(name) { }\n    tickAll() {\n        this.scripts.forEach((script) => {\n            script.tick();\n        });\n    }\n}\n\n\n//# sourceURL=webpack://commander/./src/engines/scripting/classes/scriptManager.ts?");
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _engines_engines__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./engines/engines */ \"./src/engines/engines.ts\");\n/* harmony import */ var _engines_rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./engines/rendering/classes/renderingManager */ \"./src/engines/rendering/classes/renderingManager.ts\");\n\n\nasync function main() {\n    const renderingDetails = await _engines_engines__WEBPACK_IMPORTED_MODULE_0__.Engines.Rendering.initialize();\n    if (!renderingDetails) {\n        console.error(\"Failed to get rendering details\");\n        return;\n    }\n    const renderingManager = new _engines_rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_1__.RenderingManager();\n    renderingManager.addRenderer(\"main\", renderingDetails.device, true);\n    async function loop() {\n        renderingManager.renderAll();\n        requestAnimationFrame(loop);\n    }\n    loop();\n}\nmain();\n\n\n//# sourceURL=webpack://commander/./src/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _engines_engines__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./engines/engines */ \"./src/engines/engines.ts\");\n/* harmony import */ var _engines_rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./engines/rendering/classes/renderingManager */ \"./src/engines/rendering/classes/renderingManager.ts\");\n\n\nasync function main() {\n    const renderingDetails = await _engines_engines__WEBPACK_IMPORTED_MODULE_0__.Engines.Rendering.initialize();\n    if (!renderingDetails) {\n        console.error(\"Failed to get rendering details\");\n        return;\n    }\n    const renderingManager = new _engines_rendering_classes_renderingManager__WEBPACK_IMPORTED_MODULE_1__.RenderingManager();\n    renderingManager.addRenderer(\"main\", renderingDetails.device, true);\n    async function loop() {\n        _engines_engines__WEBPACK_IMPORTED_MODULE_0__.Engines.Scripting.manager.tickAll();\n        renderingManager.renderAll();\n        requestAnimationFrame(loop);\n    }\n    loop();\n}\nmain();\n\n\n//# sourceURL=webpack://commander/./src/index.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/files/files.ts":
+/*!**********************************!*\
+  !*** ./src/utils/files/files.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Files: () => (/* binding */ Files)\n/* harmony export */ });\n/* harmony import */ var _functions_findNameFromPath__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions/findNameFromPath */ \"./src/utils/files/functions/findNameFromPath.ts\");\n\nconst Files = {\n    findNameFromPath: _functions_findNameFromPath__WEBPACK_IMPORTED_MODULE_0__.findNameFromPath,\n};\n\n\n//# sourceURL=webpack://commander/./src/utils/files/files.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/files/functions/findNameFromPath.ts":
+/*!*******************************************************!*\
+  !*** ./src/utils/files/functions/findNameFromPath.ts ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   findNameFromPath: () => (/* binding */ findNameFromPath)\n/* harmony export */ });\nfunction findNameFromPath(path) {\n    const parts = path.split(/[/\\\\]/);\n    return parts[parts.length - 1];\n}\n\n\n//# sourceURL=webpack://commander/./src/utils/files/functions/findNameFromPath.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/logs/functions/write.ts":
+/*!*******************************************!*\
+  !*** ./src/utils/logs/functions/write.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   write: () => (/* binding */ write)\n/* harmony export */ });\nfunction write(...args) {\n    console.log(...args);\n}\n\n\n//# sourceURL=webpack://commander/./src/utils/logs/functions/write.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/logs/logs.ts":
+/*!********************************!*\
+  !*** ./src/utils/logs/logs.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Logs: () => (/* binding */ Logs)\n/* harmony export */ });\n/* harmony import */ var _functions_write__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions/write */ \"./src/utils/logs/functions/write.ts\");\n\nconst Logs = {\n    write: _functions_write__WEBPACK_IMPORTED_MODULE_0__.write,\n};\n\n\n//# sourceURL=webpack://commander/./src/utils/logs/logs.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/utils.ts":
+/*!****************************!*\
+  !*** ./src/utils/utils.ts ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   Utils: () => (/* binding */ Utils)\n/* harmony export */ });\n/* harmony import */ var _files_files__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./files/files */ \"./src/utils/files/files.ts\");\n/* harmony import */ var _logs_logs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./logs/logs */ \"./src/utils/logs/logs.ts\");\n\n\nconst Utils = {\n    Files: _files_files__WEBPACK_IMPORTED_MODULE_0__.Files,\n    Logs: _logs_logs__WEBPACK_IMPORTED_MODULE_1__.Logs,\n};\n\n\n//# sourceURL=webpack://commander/./src/utils/utils.ts?");
 
 /***/ })
 

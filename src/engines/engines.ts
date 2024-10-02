@@ -1,14 +1,17 @@
 import { RenderingManager } from "./rendering/classes/renderingManager";
 import { initWebGPU } from "./rendering/init";
 import { Pipeline } from "./rendering/classes/pipeline";
-/**
- * ! Later issues because this will need to be accessible in all scripts (checks needed for manager to make sure only one is created)
- */
+import { ScriptManager } from "./scripting/classes/scriptManager";
+import { Script } from "./scripting/classes/script";
+
 export const Engines = {
      Rendering: {
           manager: new RenderingManager(),
           initialize: initWebGPU,
           Pipeline: Pipeline,
      },
-     Scripting: {},
+     Scripting: {
+          manager: new ScriptManager(),
+          script: Script,
+     },
 };

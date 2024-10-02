@@ -11,6 +11,8 @@ async function main() {
      renderingManager.addRenderer("main", renderingDetails.device, true);
 
      async function loop() {
+          Engines.Scripting.manager.tickAll();
+
           renderingManager.renderAll();
 
           requestAnimationFrame(loop);

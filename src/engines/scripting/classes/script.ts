@@ -3,10 +3,15 @@ import { Utils } from "../../../utils/utils";
 export class Script {
      private worker: Worker;
      private name: string;
+     /**
+      * Prevents ticks from overlapping
+      */
+     private isTicking: boolean = false;
 
      private log(...args: any[]): void {
           Utils.Logs.write("[Script:", this.name, "] - ", ...args);
      }
+
      constructor(path: string) {
           this.worker = new Worker(path);
           this.name = Utils.Files.findNameFromPath(path);
@@ -16,14 +21,35 @@ export class Script {
      public getName(): string {
           return this.name;
      }
+
      public setName(name: string): void {
           this.name = name;
      }
 
-     /**
-      * Will later be implemented in the constructor
-      */
-     public async tick() {
-          this.log("nuh huh");
+     public async tick(): Promise<void> {
+          if (this.isTicking) {
+               this.log("Tick is already running");
+               return;
+          }
+
+          this.isTicking = true;
+
+          return new Promise((resolve, reject) => {
+               this.worker.postMessage({ type: "tick" });
+
+               this.worker.onmessage = (event: MessageEvent) => {
+                    if (event.data.type === "tickComplete") {
+                         this.log("Tick completed");
+                         this.isTicking = false;
+                         resolve();
+                    }
+               };
+
+               this.worker.onerror = (error) => {
+                    this.log("Error in worker tick:", error);
+                    this.isTicking = false;
+                    reject(error);
+               };
+          });
      }
 }
