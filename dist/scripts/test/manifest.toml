@@ -1,0 +1,13 @@
+[informations]
+author = ""
+description = ""
+
+
+[files]
+
+[files.client]
+scripts = ["client/test.js"]
+assets = []
+
+[files.server]
+scripts = ["server/test.js"]

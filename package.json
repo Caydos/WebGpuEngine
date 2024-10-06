@@ -21,6 +21,6 @@
           "webpack-cli": "^5.1.4"
      },
      "dependencies": {
-          "imgui-js": "github:flyover/imgui-js"
+          "toml": "^3.0.0"
      }
 }

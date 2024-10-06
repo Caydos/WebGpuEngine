@@ -15,7 +15,7 @@ export class Script {
      constructor(path: string) {
           this.worker = new Worker(path);
           this.name = Utils.Files.findNameFromPath(path);
-          this.worker.postMessage({ type: "start" });
+          this.worker.postMessage({ type: "initialized" });
      }
 
      public getName(): string {
@@ -26,7 +26,7 @@ export class Script {
           this.name = name;
      }
 
-     public async tick(): Promise<void>{
+     public async tick(): Promise<void> {
           if (this.isTicking) {
                // this.log("Tick is already running");
                return;
@@ -41,6 +41,9 @@ export class Script {
                     if (event.data.type === "tickCompleted") {
                          this.isTicking = false;
                          resolve();
+                    }
+                    if (event.data.type === "log") {
+                         this.log(event.data.message);
                     }
                };
 

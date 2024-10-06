@@ -10,7 +10,11 @@ async function main() {
      const renderingManager = new RenderingManager();
      renderingManager.addRenderer("main", renderingDetails.device, true);
 
-     Engines.Scripting.manager.addScript("scripts/test.js");
+     /*
+      * Hardcoded for now, waiting for server API
+      */
+     Engines.Scripting.manager.addScript("scripts/test/client/test.js");
+
      async function loop() {
           Engines.Scripting.manager.tickAll();
 
